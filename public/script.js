@@ -7,6 +7,13 @@ const messageDiv = document.getElementById('message');
 const linksTableBody = document.getElementById('links-tbody');
 const searchInput = document.getElementById('search');
 
+// Generate or get user ID
+let userId = localStorage.getItem('tinylink_userId');
+if (!userId) {
+  userId = 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+  localStorage.setItem('tinylink_userId', userId);
+}
+
 // Load links on page load
 document.addEventListener('DOMContentLoaded', loadLinks);
 
@@ -30,7 +37,8 @@ linkForm.addEventListener('submit', async (e) => {
             },
             body: JSON.stringify({
                 originalUrl,
-                shortCode: customCode || undefined
+                shortCode: customCode || undefined,
+                userId
             }),
         });
 
@@ -57,7 +65,7 @@ searchInput.addEventListener('input', filterLinks);
 // Load all links
 async function loadLinks() {
     try {
-        const response = await fetch('/api/links');
+        const response = await fetch(`/api/links?userId=${encodeURIComponent(userId)}`);
         const links = await response.json();
 
         displayLinks(links);
@@ -169,7 +177,7 @@ async function deleteLink(code) {
     if (!confirm('Are you sure you want to delete this link?')) return;
 
     try {
-        const response = await fetch(`/api/links/${code}`, {
+        const response = await fetch(`/api/links/${code}?userId=${encodeURIComponent(userId)}`, {
             method: 'DELETE',
         });
 

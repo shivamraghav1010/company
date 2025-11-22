@@ -7,7 +7,8 @@ const router = express.Router();
 // POST /api/links - Create a new link
 router.post('/links', [
   body('originalUrl').isURL().withMessage('Invalid URL'),
-  body('shortCode').optional().isLength({ min: 6, max: 8 }).matches(/^[A-Za-z0-9]{6,8}$/).withMessage('Short code must be 6-8 alphanumeric characters')
+  body('shortCode').optional().isLength({ min: 6, max: 8 }).matches(/^[A-Za-z0-9]{6,8}$/).withMessage('Short code must be 6-8 alphanumeric characters'),
+  body('userId').isString().notEmpty().withMessage('User ID is required')
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -15,7 +16,7 @@ router.post('/links', [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { originalUrl, shortCode } = req.body;
+    const { originalUrl, shortCode, userId } = req.body;
 
     let code = shortCode;
     if (!code) {
@@ -38,7 +39,8 @@ router.post('/links', [
 
     const link = new Link({
       shortCode: code,
-      originalUrl
+      originalUrl,
+      userId
     });
 
     await link.save();
@@ -53,10 +55,15 @@ router.post('/links', [
   }
 });
 
-// GET /api/links - List all links
+// GET /api/links - List all links for a user
 router.get('/links', async (req, res) => {
   try {
-    const links = await Link.find().sort({ createdAt: -1 });
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const links = await Link.find({ userId }).sort({ createdAt: -1 });
     res.json(links.map(link => ({
       shortCode: link.shortCode,
       originalUrl: link.originalUrl,
@@ -72,7 +79,12 @@ router.get('/links', async (req, res) => {
 // GET /api/links/:code - Get stats for a specific link
 router.get('/links/:code', async (req, res) => {
   try {
-    const link = await Link.findOne({ shortCode: req.params.code });
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const link = await Link.findOne({ shortCode: req.params.code, userId });
     if (!link) {
       return res.status(404).json({ error: 'Link not found' });
     }
@@ -92,7 +104,12 @@ router.get('/links/:code', async (req, res) => {
 // DELETE /api/links/:code - Delete link
 router.delete('/links/:code', async (req, res) => {
   try {
-    const link = await Link.findOneAndDelete({ shortCode: req.params.code });
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    const link = await Link.findOneAndDelete({ shortCode: req.params.code, userId });
     if (!link) {
       return res.status(404).json({ error: 'Link not found' });
     }

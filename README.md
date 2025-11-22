@@ -9,6 +9,7 @@ A simple URL shortener web application built with Node.js, Express.js, and Mongo
 - View link statistics
 - Delete links
 - Clean, responsive web interface
+- **User isolation**: Each user only sees their own links (privacy protection)
 
 ## Installation
 
@@ -38,14 +39,22 @@ A simple URL shortener web application built with Node.js, Express.js, and Mongo
    npm start
    ```
 
+## User Identification
+
+The application automatically generates a unique user ID for each browser using localStorage. This ensures that:
+- Each user only sees their own shortened links
+- Links are properly isolated between different users
+- No authentication is required for basic functionality
+- User data persists across browser sessions
+
 The application will be available at `http://localhost:3000`
 
 ## API Endpoints
 
 - `POST /api/links` - Create a new link
-- `GET /api/links` - List all links
-- `GET /api/links/:code` - Get stats for a specific link
-- `DELETE /api/links/:code` - Delete a link
+- `GET /api/links?userId=<userId>` - List all links for a specific user
+- `GET /api/links/:code?userId=<userId>` - Get stats for a specific link (user must own the link)
+- `DELETE /api/links/:code?userId=<userId>` - Delete a link (user must own the link)
 - `GET /healthz` - Health check (returns system status and database connectivity)
 
 ## Routes

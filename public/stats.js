@@ -1,6 +1,9 @@
 // Get code from URL path
 const code = window.location.pathname.split('/').pop();
 
+// Get user ID from localStorage
+const userId = localStorage.getItem('tinylink_userId');
+
 const loadingDiv = document.getElementById('loading');
 const statsContent = document.getElementById('stats-content');
 const errorMessage = document.getElementById('error-message');
@@ -23,13 +26,13 @@ copyLinkBtn.addEventListener('click', () => {
 
 // Load link stats
 async function loadStats() {
-    if (!code) {
+    if (!code || !userId) {
         showError();
         return;
     }
 
     try {
-        const response = await fetch(`/api/links/${code}`);
+        const response = await fetch(`/api/links/${code}?userId=${encodeURIComponent(userId)}`);
         const data = await response.json();
 
         if (response.ok) {

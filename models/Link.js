@@ -20,6 +20,11 @@ const linkSchema = new mongoose.Schema({
       message: 'Invalid URL format'
     }
   },
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
   clicks: {
     type: Number,
     default: 0
