@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyLink - URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>TinyLink</h1>
+        <p>Shorten your URLs and track clicks</p>
+    </header>
+
+    <main>
+        <section id="create-link">
+            <h2>Create New Link</h2>
+            <form id="link-form">
+                <div class="form-group">
+                    <label for="original-url">Original URL:</label>
+                    <input type="url" id="original-url" required placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="custom-code">Custom Code (optional):</label>
+                    <input type="text" id="custom-code" pattern="[A-Za-z0-9]{6,8}" placeholder="abc123">
+                    <small>6-8 alphanumeric characters</small>
+                </div>
+                <button type="submit" id="submit-btn">Create Link</button>
+            </form>
+            <div id="message"></div>
+        </section>
+
+        <section id="links-list">
+            <h2>Your Links</h2>
+            <div id="search-container">
+                <input type="text" id="search" placeholder="Search by code or URL...">
+            </div>
+            <table id="links-table">
+                <thead>
+                    <tr>
+                        <th>Short Code</th>
+                        <th>Original URL</th>
+                        <th>Clicks</th>
+                        <th>Last Clicked</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="links-tbody">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

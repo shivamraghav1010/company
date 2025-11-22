@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Stats - TinyLink</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>TinyLink - Link Statistics</h1>
+        <a href="/" style="color: white; text-decoration: underline;">← Back to Dashboard</a>
+    </header>
+
+    <main>
+        <section id="stats-section">
+            <div id="loading">Loading...</div>
+            <div id="stats-content" style="display: none;">
+                <h2>Link Details</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>Short Code</h3>
+                        <p id="short-code"></p>
+                        <button id="copy-link" class="btn-small btn-copy">Copy Link</button>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Original URL</h3>
+                        <p id="original-url"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Total Clicks</h3>
+                        <p id="clicks" class="stat-number"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Last Clicked</h3>
+                        <p id="last-clicked"></p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Created</h3>
+                        <p id="created-at"></p>
+                    </div>
+                </div>
+            </div>
+            <div id="error-message" style="display: none;">
+                <p>Link not found or error loading stats.</p>
+                <a href="/">← Back to Dashboard</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="/stats.js"></script>
+</body>
+</html>
