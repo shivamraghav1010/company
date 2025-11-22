@@ -7,7 +7,7 @@ const router = express.Router();
 // POST /api/links - Create a new link
 router.post('/links', [
   body('originalUrl').isURL().withMessage('Invalid URL'),
-  body('shortCode').optional().isLength({ min: 6, max: 8 }).matches(/^[A-Za-z0-9]{6,8}$/).withMessage('Short code must be 6-8 alphanumeric characters'),
+  body('shortCode').optional().isLength({ min: 1, max: 20 }).matches(/^[A-Za-z0-9]{1,20}$/).withMessage('Short code must be 1-20 alphanumeric characters'),
   body('userId').isString().notEmpty().withMessage('User ID is required')
 ], async (req, res) => {
   try {
@@ -33,7 +33,7 @@ router.post('/links', [
       // Check if custom code already exists
       const existingLink = await Link.findOne({ shortCode: code });
       if (existingLink) {
-        return res.status(409).json({ error: 'Short code already exists' });
+        return res.status(409).json({ error: `Custom code "${code}" is already taken. Please choose a different code.` });
       }
     }
 

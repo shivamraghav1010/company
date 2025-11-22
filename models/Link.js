@@ -5,9 +5,9 @@ const linkSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 6,
-    maxlength: 8,
-    match: /^[A-Za-z0-9]{6,8}$/
+    minlength: 1,
+    maxlength: 20,
+    match: /^[A-Za-z0-9]{1,20}$/
   },
   originalUrl: {
     type: String,

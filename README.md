@@ -4,7 +4,7 @@ A simple URL shortener web application built with Node.js, Express.js, and Mongo
 
 ## Features
 
-- Create short links with optional custom codes
+- Create short links with optional custom codes (1-20 alphanumeric characters)
 - Redirect to original URLs with click tracking
 - View link statistics
 - Delete links
